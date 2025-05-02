@@ -41,8 +41,8 @@ jobs:
       with:
         draft: false
         prerelease: false
-        release_name: "release1"
-        tag_name: "tag3"
+        release_name: "release4"
+        tag_name: "tag4"
       env:
         GITHUB_TOKEN: ${{ github.token }}
     
