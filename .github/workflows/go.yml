@@ -36,7 +36,7 @@ jobs:
       run: Compress-Archive -Path ./build-artifacts/* -Destination ./release.zip
 
     - name: Release
-      uses: actions/create-release@v4
+      uses: actions/create-release@v1
       id: create_release
       with:
         draft: false
@@ -47,7 +47,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
     
     - name: Upload
-      uses: actions/upload-release-asset@v4
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
