@@ -11,10 +11,11 @@ on:
   release:
     types: 
         - created
-     
+permissions:
+  contents: write
+  
 jobs:
-
-  build:
+  release:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
@@ -28,5 +29,5 @@ jobs:
       run: mkdir -p ./build-artifacts
         
     - name: Build
-      run: go build -v ./... -o ./build-artifacts/snowflake.exe
+      run: go build -o ./build-artifacts/snowflake.exe -v ./... 
 
