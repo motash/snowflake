@@ -30,7 +30,15 @@ jobs:
         
     - name: Build
       run: go build -o ./build-artifacts/ -v ./... 
+    
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows build
+        path: ./build-artifacts/
 
+
+  
   release:
     name: Release pushed tag
     runs-on: ubuntu-22.04
@@ -38,9 +46,9 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: "tag1"
+          tag: "tag2"
         run: |
-          gh release create "tag1" \
+          gh release create "tag2" \
               --repo="$GITHUB_REPOSITORY" \
-              --title="tag1v" \
+              --title="tag2v" \
               --generate-notes
