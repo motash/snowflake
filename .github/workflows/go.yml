@@ -15,40 +15,47 @@ permissions:
   contents: write
   
 jobs:
-  build:
+  build_release:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: checkout
+      uses: actions/checkout@v4
 
-    - name: Set up Go
+    - name: GoSetup
       uses: actions/setup-go@v4
       with:
         go-version: '1.20'
         
-    - name: prep output
+    - name: outDir
       run: mkdir -p ./build-artifacts
         
     - name: Build
       run: go build -o ./build-artifacts/ -v ./... 
-    
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+
+    - name: Zip
+      run: zip ./release.zip ./build-artifacts/* -r
+
+    - name: Release
+      uses: actions/create-release@v4
+      id: create_release
       with:
-        name: windows build
-        path: ./build-artifacts/
+        draft: false
+        prerelease: false
+        release_name: "release1"
+        tag_name: "tag3"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+    - name: Upload
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release.zip
+        asset_name: release.windows-amd64.zip
+        asset_content_type: application/zip
 
 
   
-  release:
-    name: Release pushed tag
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: "tag2"
-        run: |
-          gh release create "tag2" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="tag2v" \
-              --generate-notes
+
