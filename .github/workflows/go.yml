@@ -29,5 +29,5 @@ jobs:
       run: mkdir -p ./build-artifacts
         
     - name: Build
-      run: go build -o ./build-artifacts/snowflake.exe -v ./... 
+      run: go build -o ./build-artifacts/ -v ./... 
 
